@@ -169,21 +169,20 @@
     const openLetter = document.getElementById('openLetter');
     const closeLetter = document.getElementById('closeLetter');
     const letterPopup = document.getElementById('letterPopup');
-
-    openLetter.addEventListener('click', () => { letterPopup.style.display = 'flex'; });
-    closeLetter.addEventListener('click', () => { letterPopup.style.display = 'none'; });
-
-    // Audio Handling for GitHub Pages autoplay
     const audio = document.getElementById('song');
-    audio.play().catch(() => { console.log("Autoplay blocked, will unmute on first click."); });
 
-    // Unmute and play on first click anywhere
-    window.addEventListener('click', () => {
-      if(audio.paused) { 
+    openLetter.addEventListener('click', () => {
+      letterPopup.style.display = 'flex';
+      // Play and unmute the audio when button is clicked
+      if(audio.paused) {
         audio.muted = false;
         audio.play().catch(()=>{});
       }
-    }, { once: true });
+    });
+
+    closeLetter.addEventListener('click', () => {
+      letterPopup.style.display = 'none';
+    });
   </script>
 </body>
 </html>
