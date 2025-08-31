@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Anniversary ❤️</title>
+  <style>
+    :root {
+      --blue1: #00a0ff;
+      --blue2: #002aff;
+      --red: #ff2e63;
+      --text: #ffffff;
+      --glow: #ff9ec4;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(180deg, #0d0d1a, #1a0033, #33001a);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* Falling Hearts Background */ 
+    .heart { 
+      position: fixed; 
+      top: -10px; 
+      font-size: 20px; 
+      color: red, pink, purple, blue; 
+      animation: fall linear forwards; 
+      z-index: 0; 
+      opacity: 0.8; 
+    } 
+    
+    @keyframes fall { 
+      0% { transform: translateY(-10px) rotate(0deg); opacity: 1; } 
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } 
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 2;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px 16px 100px;
+      text-align: center;
+    }
+
+    .bmw-stripes {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 72px;
+      height: 16px;
+      display: flex;
+      transform: skewX(-18deg);
+      border-radius: 2px;
+      overflow: hidden;
+      z-index: 3;
+    }
+
+    .bmw-stripes span {
+      flex: 1;
+    }
+
+    .bmw-stripes span:nth-child(1) { background: var(--blue1); }
+    .bmw-stripes span:nth-child(2) { background: var(--blue2); }
+    .bmw-stripes span:nth-child(3) { background: var(--red); }
+
+    h1 {
+      font-size: 2.5em;
+      color: white;
+      text-shadow: 0 0 12px var(--glow);
+    }
+
+    .video-box {
+      position: relative;
+      max-width: 260px;
+      width: 90%;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(255, 50, 120, 0.4);
+      z-index: 2;
+    }
+
+    .video-box video {
+      width: 100%;
+      display: block;
+    }
+
+    .caption {
+      font-size: 1.1em;
+      color: #ffc2d1;
+      text-shadow: 0 0 6px rgba(255,180,200,0.6);
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #ff4d6d;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 0, 80, 0.4);
+      transition: transform 0.2s;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* Letter Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 5;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup-content {
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 20px;
+      max-width: 400px;
+      width: 80%;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.9);}
+      to {opacity: 1; transform: scale(1);}
+    }
+
+    .close-btn {
+      margin-top: 15px;
+      padding: 8px 16px;
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hearts Background -->
+  <div class="hearts-background" id="heartsContainer"></div>
+
+  <div class="wrap">
+    <div class="bmw-stripes"><span></span><span></span><span></span></div>
+    <h1>Happy Anniversary ❤️</h1>
+
+    <div class="video-box">
+      <video src="us.mp4" autoplay muted loop playsinline></video>
+    </div>
+
+    <div class="caption">Loving you 1rpm at a time</div>
+
+    <button class="btn" id="openLetter">💌 Read My Letter</button>
+  </div>
+
+  <!-- Popup Letter -->
+  <div class="popup" id="letterPopup">
+    <div class="popup-content">
+      <h2>My Love Letter ❤️</h2>
+      <p>
+        My dearest love, <br><br> 
+        Every moment with you feels like magic. Thank you for filling my world with happiness, laughter, 
+        and endless love. I am so blessed to walk this journey with you, hand in hand. <br>
+        Happy Anniversary, my gummybear. ❤️🧸
+      </p>
+      <button class="close-btn" id="closeLetter">Close</button>
+    </div>
+  </div>
+
+  <audio id="song" src="Alex Warren - Ordinary (Wedding Version) [Official Music Video].mp3" preload="auto" loop></audio>
+  <div class="audio-cta" id="audioCta">▶ Tap to Play Our Song</div>
+
+  <script>
+   // Falling Hearts
+  const colors = ["#ff4d6d", "#ff69b4", "#ff1493", "#9400d3",
+    "#1e90ff"]; 
+    function createHeart() { 
+      const heart = document.createElement("div"); 
+      heart.className = "heart"; 
+      heart.innerHTML = "❤️", "💙", "💜", "💖"; 
+      heart.style.left = Math.random() * 100 + "vw"; 
+      heart.style.fontSize = Math.random() * 20 + 15 + "px"; 
+      heart.style.animationDuration = 3 + Math.random() * 4 + "s"; 
+      heart.style.color = colors[Math.floor(Math.random() * 
+      colors.length)]; 
+      document.body.appendChild(heart); 
+
+      setTimeout(() => { heart.remove(); }, 7000); 
+    } 
+    setInterval(createHeart, 300);
+
+    // Popup letter
+    const openLetter = document.getElementById('openLetter');
+    const closeLetter = document.getElementById('closeLetter');
+    const letterPopup = document.getElementById('letterPopup');
+
+    openLetter.addEventListener('click', () => {
+      letterPopup.style.display = 'flex';
+    });
+
+    closeLetter.addEventListener('click', () => {
+      letterPopup.style.display = 'none';
+    });
+
+    // Audio handling
+    const audio = document.getElementById('song');
+    const cta = document.getElementById('audioCta');
+    audio.volume = 1;
+
+    audio.play().catch(() => {
+      cta.style.display = 'block';
+    });
+
+    cta.addEventListener('click', () => {
+      audio.play().then(() => {
+        cta.style.display = 'none';
+      });
+    });
+  </script>
+</body>
+</html>
